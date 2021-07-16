@@ -1,0 +1,11 @@
+framework module consumerSDK {
+  umbrella header "consumerSDK.h"
+
+  export *
+  module * { export * }
+}
+
+module consumerSDK.Swift {
+    header "consumerSDK-Swift.h"
+    requires objc
+}

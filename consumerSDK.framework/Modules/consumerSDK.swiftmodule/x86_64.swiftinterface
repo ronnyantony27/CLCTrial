@@ -1,0 +1,197 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.4 (swiftlang-1205.0.26.9 clang-1205.0.19.55)
+// swift-module-flags: -target x86_64-apple-ios13.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -Onone -module-name consumerSDK
+import CLCommon
+import CoreData
+import CoreLocation
+import Foundation
+import Swift
+import UIKit
+@_exported import consumerSDK
+@objc public enum CLLogLevel : Swift.Int, Swift.RawRepresentable {
+  case none
+  case debug
+  case info
+  case error
+  public typealias RawValue = Swift.String
+  public var rawValue: consumerSDK.CLLogLevel.RawValue {
+    get
+  }
+  public init?(rawValue: consumerSDK.CLLogLevel.RawValue)
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class CLConsumerBaseClass : ObjectiveC.NSObject {
+  @objc deinit
+}
+@objc @_hasMissingDesignatedInitializers public class CLGeoFence : ObjectiveC.NSObject, Swift.Decodable, Foundation.NSSecureCoding {
+  @objc public static var supportsSecureCoding: Swift.Bool {
+    @objc get
+  }
+  required public init(from decoder: Swift.Decoder) throws
+  @objc required public convenience init(coder decoder: Foundation.NSCoder)
+  @objc public func encode(with coder: Foundation.NSCoder)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc public class CueLessManager : ObjectiveC.NSObject {
+  @objc public static var shared: consumerSDK.CueLessManager
+  @objc public var logLevel: consumerSDK.CLLogLevel
+  @objc public var delegate: consumerSDK.CueLessResponse?
+  @objc public var server: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+  @objc public func validateSDK(apiKey: Swift.String, secretKey: Swift.String)
+  @objc public func startOrderTracking()
+  @objc public func startOrderTracking(models: [consumerSDK.CLConsumerOrderModel])
+  @objc public func addOrdersToTracking(models: [consumerSDK.CLConsumerOrderModel])
+  @objc public func stopOrderTracking(models: [consumerSDK.CLConsumerOrderModel])
+  @objc public func trackingOrdersRequest()
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension String {
+  public var localized: Swift.String {
+    get
+  }
+  public func jsonStringToDictionary() -> [Swift.String : Swift.String]?
+}
+@objc public class CLConsumerOrderModel : ObjectiveC.NSObject {
+  @objc public var orderId: Swift.String?
+  @objc public var kioskId: Swift.String?
+  @objc public var location: CoreLocation.CLLocation?
+  @objc public var eta: Swift.Double
+  @objc public var distance: Swift.Double
+  @objc public var orderStatus: Swift.String?
+  @objc public init(order_id: Swift.String, kiosk_id: Swift.String)
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension CLConsumerOrderModel {
+  public static func == (lhs: consumerSDK.CLConsumerOrderModel, rhs: consumerSDK.CLConsumerOrderModel) -> Swift.Bool
+}
+@_inheritsConvenienceInitializers @objc(Kiosk) public class Kiosk : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+extension Kiosk {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<consumerSDK.Kiosk>
+  @objc @NSManaged dynamic public var fences: [consumerSDK.CLGeoFence]? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var siteId: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var location: CoreLocation.CLLocation? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var orders: Foundation.NSSet? {
+    @objc get
+    @objc set(value)
+  }
+}
+extension Kiosk {
+  @objc(addOrdersObject:) @NSManaged dynamic public func addToOrders(_ value: consumerSDK.ConsumerOrder)
+  @objc(removeOrdersObject:) @NSManaged dynamic public func removeFromOrders(_ value: consumerSDK.ConsumerOrder)
+  @objc(addOrders:) @NSManaged dynamic public func addToOrders(_ values: Foundation.NSSet)
+  @objc(removeOrders:) @NSManaged dynamic public func removeFromOrders(_ values: Foundation.NSSet)
+}
+extension Kiosk : Swift.Identifiable {
+  public typealias ID = Swift.ObjectIdentifier
+}
+@objc public enum CLErrorTypes : Swift.Int, Swift.RawRepresentable {
+  case unknown
+  case invalid_API_Key
+  case invalid_Secret_Key
+  case keyExpired
+  case notAuthenticated
+  case permissionError
+  case invalidOrderId
+  case invalidKioskId
+  case deviceTokenNotSet
+  case none
+  public typealias RawValue = Swift.String
+  public var rawValue: consumerSDK.CLErrorTypes.RawValue {
+    get
+  }
+  public init?(rawValue: consumerSDK.CLErrorTypes.RawValue)
+  public func getInformation() -> Swift.String
+}
+@objc public protocol CueLessResponse {
+  @objc func orderStatusUpdate(status: Swift.String)
+  @objc func trackingOrderDetails(result: [consumerSDK.CLConsumerOrderModel]?, errorResponce: consumerSDK.CLResponseInformation?)
+  @objc func trackingOrdersResponse(result: [consumerSDK.CLConsumerOrderModel])
+  @objc func sdkInitialisation(response: consumerSDK.CLResponseInformation)
+  @objc func generalResponse(information: consumerSDK.CLResponseInformation)
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc public class CLResponseInformation : ObjectiveC.NSObject {
+  @objc public var message: Swift.String?
+  @objc public var cueLessError: CLCommon.CueLessError?
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(ConsumerOrder) public class ConsumerOrder : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+extension ConsumerOrder {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<consumerSDK.ConsumerOrder>
+  @objc @NSManaged dynamic public var distance: Swift.Double {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var eta: Swift.Double {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var latitude: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var longitude: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var orderId: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var orderStatus: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var siteId: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var kiosk: consumerSDK.Kiosk? {
+    @objc get
+    @objc set(value)
+  }
+}
+extension ConsumerOrder : Swift.Identifiable {
+  public typealias ID = Swift.ObjectIdentifier
+}
+@_inheritsConvenienceInitializers @objc(Settings) public class Settings : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+extension Settings {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<consumerSDK.Settings>
+  @objc @NSManaged dynamic public var clientId: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var socketUrl: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var token: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+}
+extension Settings : Swift.Identifiable {
+  public typealias ID = Swift.ObjectIdentifier
+}
